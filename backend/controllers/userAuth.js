@@ -47,23 +47,34 @@ const Login = asyncHandler(async(req,res)=>{
    //call virtual function
 try {
 
-   const user = await User.matchpassword(email,password);
+   const token = await User.matchpassword(email,password);
 
 
-   return res.status(200).json({
+   return res.cookie("token",token).status(200).json({
     message : "Valid User"
    })
 
 
    
 } catch (error) {
-   return resp.render('signin.ejs',{
-       error : "incorrect Password"
+   return resp.status(400).json({
+    message : "Not Valid User"
    })
-
 }
 
 })
 
+const alluser = (async(req,res)=>{
+    // regex i use for match the word that is avalable in db
+    // or is use for or operation in mongodb
+    const keyword = req.query.search && {
+        $or : [
+            {name:{$regex: req.query.search , $options: "i"}},
+            {email:{$regex: req.query.search , $options: "i"}},
+        ]
+    }
+ const users  = await User.find(keyword)
+res.send(users)
+})
 
-module.exports = {SignUp ,Login}
+module.exports = {SignUp ,Login ,alluser}

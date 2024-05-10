@@ -1,5 +1,6 @@
 const {Schema ,model} = require("mongoose");
 const { createHmac ,randomBytes } = require('node:crypto');
+const {setUser} = require("../config/generateJWT")
 
 const userModal = new Schema({
     name : {
@@ -55,9 +56,11 @@ userModal.static("matchpassword", async function(email , password){
         throw   new Error("incorect password")
         
      }
-else{
-    return user
-}
+
+     const token = await CerateTokenForUser(user);
+
+     return token;
+
   
 
 })
