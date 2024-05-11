@@ -1,24 +1,33 @@
 const { getUser} = require("../config/generateJWT")
+const User = require("../model/userModal")
 
-function checkAuthenticationcookie(cookieName){
-return (req,res,next)=>{
 
-    // get the cookie 
-    const tokencookievalue = req.cookies[cookieName]
 
-    if(!tokencookievalue){
-return next();
-    }
 
-    try {
-        const   userpayload =  getUser(tokencookievalue)
-        req.user = userpayload
-        console.log(req.user)
-    } catch (error) {
-            
-    }
- return   next();
-}
-}
 
-module.exports = {checkAuthenticationcookie}
+
+  const authenticationToken = (cookieName)=>{
+    return async(req,res,next)=>{
+
+             try {
+                // get the cookie 
+            const tokencookievalue = req.cookies[cookieName]
+                const   userpayload =  getUser(tokencookievalue);
+                req.user = await User.findById(userpayload.id).select("-password");
+  
+                 next();
+               
+            } catch (error) {
+                res.status(401);
+                throw new Error("Not authorized, token failed");
+            }
+
+            if (!token) {
+                res.status(401);
+                throw new Error("Not authorized, no token");
+              }
+              return next()
+        }
+  }
+
+  module.exports = { authenticationToken };
