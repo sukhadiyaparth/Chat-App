@@ -8,7 +8,7 @@ function App() {
 
       <Routes>
 
-        <Route path='/' element={<Home/>}></Route>
+        <Route path='/' element={<Home/>} exact   ></Route>
         <Route path='/chats' element={<Chat/>}></Route>
 
       </Routes>  

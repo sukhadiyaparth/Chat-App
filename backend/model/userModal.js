@@ -1,8 +1,8 @@
-const {Schema ,model} = require("mongoose");
+const mongoose = require('mongoose');
 const { createHmac ,randomBytes } = require('node:crypto');
 const {setUser} = require("../config/generateJWT")
 
-const userModal = new Schema({
+const userModal =  new mongoose.Schema({
     name : {
         type : String,
         required : true
@@ -65,6 +65,6 @@ userModal.static("matchpassword", async function(email , password){
 
 })
 
-const User =model("User", userModal)
+const User = mongoose.model("User", userModal)
 
 module.exports = User;

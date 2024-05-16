@@ -1,7 +1,7 @@
 const express = require("express");
 
 const  { authenticationToken} = require('../middelware/authentication')
-const  { accessChat} = require('../controllers/chatController')
+const  { accessChat, fetchChats} = require('../controllers/chatController')
 
 const route = express.Router();
 
@@ -9,11 +9,11 @@ const route = express.Router();
 route.post("/",authenticationToken('token'), accessChat);
 
 
-route.get("/", authenticationToken('token'),fetchChat);
-route.post("/group",authenticationToken('token'), createGroupChat);
-route.put("/rename",authenticationToken('token'), renameGroup);
-route.put("/groupremove",authenticationToken('token'), removeFromGroup);
-route.put("/groupadd",authenticationToken('token'), addToGroup);
+route.get("/", authenticationToken('token'),fetchChats);
+// route.post("/group",authenticationToken('token'), createGroupChat);
+// route.put("/rename",authenticationToken('token'), renameGroup);
+// route.put("/groupremove",authenticationToken('token'), removeFromGroup);
+// route.put("/groupadd",authenticationToken('token'), addToGroup);
 
 
 
