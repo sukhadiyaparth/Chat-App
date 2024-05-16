@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Login from '../components/authentication/Login'
 import Signup from '../components/authentication/Signup'
 import { Box, Container, Text ,Tabs , TabList , Tab , TabPanels , TabPanel} from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 function Home() {
 
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if(userInfo){
+            navigate("/chats")
+        }
+    },[navigate])
     return (
         <div style={{ backgroundColor: 'black', minHeight: '100vh', padding: '20px',     backgroundImage: 'url("/bg.jpg")',
     }}>
