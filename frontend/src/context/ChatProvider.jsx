@@ -3,22 +3,21 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const ChatContex = createContext(null);
 
-function ChatProvider(props) {
+
+
+export const useChat = ()=>
+    useContext(ChatContex);
+
+function ChatProvider({ children }) {
     const [user,setuser] = useState() 
 
-    useEffect(()=>{
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        setuser(userInfo);
-     
-    },[])
+    
   return (
 <ChatContex.Provider value={{user,setuser}}>
-    {props?.childer}
+    {children}
 </ChatContex.Provider>  )
 };
 
-export const ChatState = ()=>{
-    return useContext(ChatContex);
-}
+
 
 export default ChatProvider;
