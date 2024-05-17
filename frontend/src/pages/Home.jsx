@@ -9,7 +9,7 @@ function Home() {
 
     useEffect(()=>{
 
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        const userInfo = JSON.parse(localStorage.getItem("user_details"));
         if(userInfo){
             navigate("/chats")
         }
