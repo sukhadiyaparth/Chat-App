@@ -37,7 +37,7 @@ const submitHandler =async ()=>{
     }
   
     try {
-        const config = {
+        const     config = {
             headers: {
               "Content-type": "application/json",
             },
@@ -53,22 +53,22 @@ const submitHandler =async ()=>{
         toast({
             title: ' Registration Successful',
             status: 'success',
-            duration: 6000,
+            duration: 4000,
             isClosable: true,
             position: "top-right"
           });
           localStorage.setItem("user_details",JSON.stringify(data));
         setloading(false);
         // history.push('/chats');
-        navigate('/chat');
+        navigate('/chats');
 
 
     } catch (error) {
         toast({
-            title: 'Error Occured',
-            description : error?.response?.data?.message,
+            title: 'Invalid User',
+            description : "Please Give Correct Email And Password",
             status: 'error',
-            duration: 6000,
+            duration: 4000,
             isClosable: true,
             position: "top-right"
           });

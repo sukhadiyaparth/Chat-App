@@ -1,8 +1,10 @@
-import { Box, Button, Tooltip, Text, MenuButton, Menu, MenuList, Avatar, MenuItem, MenuDivider, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Tooltip, Text, MenuButton, Menu, MenuList, Avatar, MenuItem, MenuDivider, useDisclosure , Input } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import ProfileModal from './ProfileModal';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react';
+
 import {
   Drawer,
   DrawerBody,
@@ -12,6 +14,9 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from '@chakra-ui/react'
+import { Chatstate } from '../../context/ChatProvider';
+import axios from 'axios';
+import ChatLoading from './ChatLoading';
 function SideDrawer() {
   const [serch, setserch] = useState("");
   const [serchResult, setserchResult] = useState([]);
@@ -20,11 +25,45 @@ function SideDrawer() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
+  const toast = useToast();
+
 
   const logoutHandler = () => {
     localStorage.removeItem("user_details")
     navigate('/')
   }
+  const { user } = Chatstate();
+  const  handleSearch = ()=>{
+        if(!serch){
+
+          toast({
+            title: 'Please Enter  something in search',
+            status: 'warning',
+            duration: 4000,
+            isClosable: true,
+            position: "top-right"
+          });
+          return;
+
+        }
+
+        try{
+          setloading(true);
+          const {data} = axios.get(`api/user?search=${serch}`);
+          setloading(false)
+          setserch(data)
+        }
+        catch(err){
+          toast({
+            title: 'Error Occured',
+            status: 'Faild to Load the Search Results',
+            duration: 4000,
+            isClosable: true,
+            position: "top-right"
+          });
+        }
+  }
+
   return (
     <>
       <Box
@@ -59,11 +98,11 @@ function SideDrawer() {
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <Avatar size="sm" cursor="pointer"
+              <Avatar size="sm" cursor="pointer" name={user.name}
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal>
+              <ProfileModal user={user}>
                 <MenuItem>Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />
@@ -85,19 +124,27 @@ function SideDrawer() {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          
+          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
 
           <DrawerBody>
-          </DrawerBody>
+          <Box display="flex" pb={2}>
 
-          <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter>
+            <Input
+            placeholder="Search by name or email"
+            mr={2}
+            value={serch}
+            onChange={(e)=>setserch(e.target.value)}
+            />
+          <Button onClick={handleSearch}> Go</Button>
+          </Box>
+          {loading ? 
+            <Chatloading/>
+          :<span>Result</span>}
+        </DrawerBody>
+       
         </DrawerContent>
+        
       </Drawer>
     </>
   )

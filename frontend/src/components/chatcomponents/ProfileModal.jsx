@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 
-function ProfileModal({children}) {
+function ProfileModal({children,user}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -14,7 +14,12 @@ function ProfileModal({children}) {
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader 
+          fontSize="40px"
+          fontFamily ="Work sans"
+          display="flex"
+          justifyContent="center"
+          >{user.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             gxg

@@ -5,15 +5,13 @@ import { Box, Container, Text ,Tabs , TabList , Tab , TabPanels , TabPanel} from
 import { useNavigate } from 'react-router-dom'
 function Home() {
 
-    const navigate = useNavigate();
+   
 
     useEffect(()=>{
 
         const userInfo = JSON.parse(localStorage.getItem("user_details"));
-        if(userInfo){
-            navigate("/chats")
-        }
-    },[navigate])
+   
+    },[])
     return (
         <div style={{ backgroundColor: 'black', minHeight: '100vh', padding: '20px',     backgroundImage: 'url("/bg.jpg")',
     }}>
