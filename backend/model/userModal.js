@@ -46,20 +46,24 @@ userModal.pre('save', function(next) {
 // create virtual function for password match
 
 userModal.static("matchpassword", async function(email , password){
+    
     const user = await this.findOne({email});
     if(!user ) throw new Error("user not found");
      const salt = user?.salt;
      const hashedPassword = user?.password;
+     console.log(hashedPassword)
      const userProviderPassword = createHmac("sha256", salt ).update(password).digest("hex")
-
+    console.log(userProviderPassword)
      if(hashedPassword !== userProviderPassword){
         throw   new Error("incorect password")
         
-     }
+     }else{
 
-     const token = await CerateTokenForUser(user);
-
-     return token;
+     const token = await setUser(user);
+        console.log(token)
+     return {token,user};
+    
+    }
 
   
 

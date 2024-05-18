@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../model/userModal')
 const {setUser} = require("../config/generateJWT")
 
-const   SignUp = asyncHandler( async    (req,res)=>{
+const       SignUp = asyncHandler( async    (req,res)=>{
     const{name,email,password,pic} = req?.body;
 
     if(!name || !email || !password ){
@@ -43,15 +43,18 @@ const   SignUp = asyncHandler( async    (req,res)=>{
 
 const Login = asyncHandler(async(req,res)=>{
     const {email,password} = req?.body;
-    console.log(email,password)
    //call virtual function
 try {
 
-   const token = await User.matchpassword(email,password);
+   const {token,user} = await User.matchpassword(email,password);
 
-
+     console.log(token)
    return res.cookie("token",token).status(200).json({
-    message : "Valid User"
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    pic: user.pic,
    })
 
 
@@ -78,3 +81,5 @@ res.send(users)
 })
 
 module.exports = {SignUp ,Login ,alluser}
+
+
