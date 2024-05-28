@@ -1,19 +1,20 @@
 const express = require("express");
+const { protect } = require("../middelware/authentication");
 
-const  { authenticationToken} = require('../middelware/authentication')
-const  { accessChat, fetchChats, createGroupChat , renameGroup , addToGroup , removeFromGroup} = require('../controllers/chatController')
+// const  { authenticationToken} = require('../middelware/authentication')
+const  { accessChat, fetchChats, createGroupChat , renameGroupChat , addToGroup , removeToGroup} = require('../controllers/chatController')
 
 const route = express.Router();
 
 //this api is use for  one on one chat
-route.post("/", accessChat);
+route.post("/",protect, accessChat);
 
 
-route.get("/", authenticationToken('token'),fetchChats);
-route.post("/group",authenticationToken('token'), createGroupChat);
-route.put("/rename",authenticationToken('token'), renameGroup);
-route.put("/groupadd",authenticationToken('token'), addToGroup);
-route.put("/groupremove",authenticationToken('token'), removeFromGroup);
+route.get("/",protect,fetchChats);
+route.post("/group",protect, createGroupChat);
+route.put("/rename",protect, renameGroupChat);
+route.put("/groupadd",protect, addToGroup);
+route.put("/groupremove",protect, removeToGroup);
 
 
 

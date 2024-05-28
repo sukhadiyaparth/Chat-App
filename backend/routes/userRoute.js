@@ -1,12 +1,12 @@
 const express = require("express");
 const { SignUp , Login,alluser } = require("../controllers/userAuth");
-const  { authenticationToken} = require('../middelware/authentication')
 const route = express.Router();
+const { protect } = require("../middelware/authentication");
 
 
 route.post("/", SignUp)
 route.post("/login", Login)
-route.get("/",alluser )
+route.get("/",protect,alluser )
 
 
 module.exports = route;

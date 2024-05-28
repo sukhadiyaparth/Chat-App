@@ -6,8 +6,7 @@ const chatRoute = require("./routes/chatRoute");
 
 
 const {notFound,errorHandler} = require("./middelware/error");
-var cookieParser = require('cookie-parser');
-const { checkAuthenticationcookie } = require("./middelware/authentication");
+
 
 
 //create instance file 
@@ -18,7 +17,6 @@ const PORT = process.env.PORT || 1000;
 
 app.use(express.json())
 
-app.use(cookieParser())
 
 
 app.use("/api/user", userRoute);

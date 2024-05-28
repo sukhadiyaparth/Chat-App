@@ -1,33 +1,33 @@
-const { getUser} = require("../config/generateJWT")
-const User = require("../model/userModal")
+const jwt = require("jsonwebtoken");
+const User = require("../model/userModal");
+const asyncHandler = require("express-async-handler");
 
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
 
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      console.log(token)
+      //decodes token id
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      req.user = await User.findById(decoded.id).select("-password");
 
-
-
-  const authenticationToken = (cookieName)=>{
-    return async(req,res,next)=>{
-
-             try {
-                // get the cookie 
-            const tokencookievalue = req.cookies[cookieName]
-                const   userpayload =  getUser(tokencookievalue);
-                req.user = await User.findById(userpayload.id).select("-password");
-  
-                 next();
-               
-            } catch (error) {
-                res.status(401);
-                throw new Error("Not authorized, token failed");
-            }
-
-            if (!token) {
-                res.status(401);
-                throw new Error("Not authorized, no token");
-              }
-              return next()
-        }
+      next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
   }
 
-  module.exports = { authenticationToken };
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
+
+module.exports = { protect };
