@@ -25,6 +25,13 @@ const userModal =  new mongoose.Schema({
         required : true
         
     },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+
+
 },  { timestaps: true }
 );
 

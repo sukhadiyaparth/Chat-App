@@ -70,13 +70,13 @@ try {
 const alluser = (async(req,res)=>{
     // regex i use for match the word that is avalable in db
     // or is use for or operation in mongodb
-    const keyword = req.query.search && {
+    const keyword = req.query.search ? {
         $or : [
             {name:{$regex: req.query.search , $options: "i"}},
             {email:{$regex: req.query.search , $options: "i"}},
         ]
-    }
- const users  = await User.find(keyword).find({_id:{$ne: req.user._id}})
+    }:{};
+ const users  = await User.find(keyword)
 res.send(users)
 })
 

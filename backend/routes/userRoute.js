@@ -6,7 +6,7 @@ const route = express.Router();
 
 route.post("/", SignUp)
 route.post("/login", Login)
-route.get("/",authenticationToken('token'),alluser )
+route.get("/",alluser )
 
 
 module.exports = route;
