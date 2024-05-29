@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { createHmac ,randomBytes } = require('node:crypto');
-const {setUser} = require("../config/generateJWT")
 
 const userModal =  new mongoose.Schema({
     name : {
@@ -55,20 +54,18 @@ userModal.pre('save', function(next) {
 userModal.static("matchpassword", async function(email , password){
     
     const user = await this.findOne({email});
+    console.log(user)
     if(!user ) throw new Error("user not found");
      const salt = user?.salt;
      const hashedPassword = user?.password;
-     console.log(hashedPassword)
+    
      const userProviderPassword = createHmac("sha256", salt ).update(password).digest("hex")
-    console.log(userProviderPassword)
+     
      if(hashedPassword !== userProviderPassword){
         throw   new Error("incorect password")
         
      }else{
-
-     const token = await setUser(user);
-        console.log(token)
-     return {token,user};
+     return {user};
     
     }
 

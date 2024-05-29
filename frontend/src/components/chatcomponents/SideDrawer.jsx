@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip, Text, MenuButton, Menu, MenuList, Avatar, MenuItem, MenuDivider, useDisclosure , Input } from '@chakra-ui/react';
+import { Box, Button, Tooltip, Text, MenuButton, Menu, MenuList, Avatar, MenuItem, MenuDivider, useDisclosure , Input, Spinner } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import ProfileModal from './ProfileModal';
@@ -17,8 +17,10 @@ import {
 import { Chatstate } from '../../context/ChatProvider';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
+import UserListItem from '../UserAvtar/UserListItem';
+
 function SideDrawer() {
-  const [serch, setserch] = useState("");
+  const [search, setsearch] = useState("");
   const [serchResult, setserchResult] = useState([]);
   const [loading, setloading] = useState(false);
   const [Chatloading, setChatloading] = useState();
@@ -32,9 +34,10 @@ function SideDrawer() {
     localStorage.removeItem("user_details")
     navigate('/')
   }
-  const { user } = Chatstate();
-  const  handleSearch = ()=>{
-        if(!serch){
+  const { user , setselectedchat , chat,setchat } = Chatstate();
+  
+  const  handleSearch = async()=>{
+        if(!search){
 
           toast({
             title: 'Please Enter  something in search',
@@ -49,9 +52,16 @@ function SideDrawer() {
 
         try{
           setloading(true);
-          const {data} = axios.get(`api/user?search=${serch}`);
+              const  config={
+                headers: {
+                  Authorization : `Bearer ${user?.JwtToken}`
+                }
+              } ;
+
+          const {data} = await axios.get(`api/user?search=${search}`, config);
+          
           setloading(false)
-          setserch(data)
+          setserchResult(data)
         }
         catch(err){
           toast({
@@ -62,6 +72,38 @@ function SideDrawer() {
             position: "top-right"
           });
         }
+  }
+
+  const accessChat = async(userId)=>{
+    console.log(userId);
+
+
+    try {
+      setChatloading(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user?.JwtToken}`,
+        },
+      };
+      const { data } = await axios.post(`/api/chat`, {userId} , config);
+      // we update the chat or apnded the chat if it is exist
+      if (!chat.find((c) => c._id === data._id)) setchat([data, ...chat]);
+      setselectedchat(data);
+      setChatloading(false);
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error fetching the chat",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+
+
   }
 
   return (
@@ -133,14 +175,24 @@ function SideDrawer() {
             <Input
             placeholder="Search by name or email"
             mr={2}
-            value={serch}
-            onChange={(e)=>setserch(e.target.value)}
+            value={search}
+            onChange={(e)=>setsearch(e.target.value)}
             />
           <Button onClick={handleSearch}> Go</Button>
           </Box>
-          {loading ? 
-            <Chatloading/>
-          :<span>Result</span>}
+          {loading ? (
+            <ChatLoading/>)
+          :(
+            serchResult?.map((user)=>(
+              <UserListItem
+              key= {user?._id}
+              user= {user}
+              handleFunction={()=>accessChat(user?._id)}
+              
+              />
+            ))
+          )}
+          {Chatloading  && <Spinner ml="auto" d="flex" />}
         </DrawerBody>
        
         </DrawerContent>

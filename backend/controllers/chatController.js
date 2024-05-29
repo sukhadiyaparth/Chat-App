@@ -21,7 +21,7 @@ const accessChat = asyncHandler(async(req,res)=>{
         isGroupChat:false,
         $and : [
           //this is login user user id
-            {users : {$elemMatch:{$eq:req?.user?._id }}},
+            {users : {$elemMatch:{$eq:req?.user?.id }}},
           // this is login current user
             {users : {$elemMatch:{ $eq:userId }}},
 
@@ -74,15 +74,15 @@ const fetchChats = asyncHandler(async (req, res) => {
     try {
 
       //find the chat with the user 
-      Chat.find({ users: { $elemMatch: { $eq: req.user.id } } })
+      Chat.find({ users: { $elemMatch: { $eq: req?.user?.id } } })
         .populate("users", "-password")
         .populate("admin", "-password")
-        .populate("latestMessage")
+        .populate("lastmessage")
         .sort({ updatedAt: -1 })
         .then(async (results) => {
           // this result is indicate lattest groupm chat
           results = await User.populate(results, {
-            path: "latestMessage.sender",
+            path: "lastmessage.sender",
             select: "name pic email",
           });
           res.status(200).send(results);
