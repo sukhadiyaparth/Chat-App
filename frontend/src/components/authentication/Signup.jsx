@@ -38,6 +38,8 @@ const submitHandler =async ()=>{
             isClosable: true,
             position: "top-right"
           });
+          setloading(false)
+
           return;
     }
     if(password !== cpassword){
@@ -48,6 +50,9 @@ const submitHandler =async ()=>{
             isClosable: true,
             position: "top-right"
           });
+          setloading(false)
+
+
           return;
     }
     try {

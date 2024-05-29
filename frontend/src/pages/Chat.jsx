@@ -25,8 +25,8 @@ function Chat() {
        w="100%"
        h="91.5vh"
        p="10px">
-         <MyChat/>
-         <ChatBox/>
+         {user&&<MyChat/>}
+         {user&&<ChatBox/>}
       </Box>
 
 

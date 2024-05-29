@@ -44,24 +44,24 @@ const       SignUp = asyncHandler( async    (req,res)=>{
 const Login = asyncHandler(async(req,res)=>{
     const {email,password} = req?.body;
    //call virtual function
+   console.log(email,password)
 try {
 
-   const {token,user} = await User.matchpassword(email,password);
-
-     console.log(token)
-   return res.cookie("token",token).status(200).json({
+   const {user} = await User.matchpassword(email,password);
+   return res.status(200).json({
     _id: user._id,
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
     pic: user.pic,
+    JwtToken :setUser(user)
    })
 
 
    
 } catch (error) {
-   return resp.status(400).json({
-    message : "Not Valid User"
+   return res.status(400).json({
+    message : "error"
    })
 }
 

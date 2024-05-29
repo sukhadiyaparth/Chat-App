@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
+import { Button, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 
 function ProfileModal({children,user}) {
@@ -22,7 +22,11 @@ function ProfileModal({children,user}) {
           >{user.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            gxg
+           <Image
+           borderRadius="full"
+           boxSize="150px"
+           src = {user?.pic}
+           />
           </ModalBody>
 
         
