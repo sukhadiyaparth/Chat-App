@@ -5,7 +5,8 @@ import axios from "axios";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/LogicsChat';
-function MyChat() {
+import GroupChatModal from './GroupChatModal'
+function MyChat({fetchAgain}) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
   const [loggedUser , setloggedUser] = useState()
   const toast = useToast();
@@ -33,10 +34,10 @@ const fetchChat = async()=> {
 };
 
 useEffect(()=>{
-
+setloggedUser(JSON.parse(localStorage.getItem("user_details")))
   fetchChat();
 
-},[])
+},[fetchAgain])
 
 
   return (
@@ -63,6 +64,8 @@ useEffect(()=>{
         >
                   My Chats
 
+                  <GroupChatModal>
+
                   <Button
                    display="flex"
                    fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -70,6 +73,7 @@ useEffect(()=>{
        >
                   Create Goup Chat
                   </Button>
+                  </GroupChatModal>
 
 
         </Box>
