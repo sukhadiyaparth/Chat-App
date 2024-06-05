@@ -6,7 +6,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/LogicsChat';
 import GroupChatModal from './GroupChatModal'
-function MyChat({fetchAgain}) {
+function MyChat({ fetchAgain }) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
   const [loggedUser , setloggedUser] = useState()
   const toast = useToast();
@@ -34,7 +34,7 @@ const fetchChat = async()=> {
 };
 
 useEffect(()=>{
-setloggedUser(JSON.parse(localStorage.getItem("user_details")))
+// setloggedUser(JSON.parse(localStorage.getItem("user_details")))
   fetchChat();
 
 },[fetchAgain])
@@ -42,7 +42,7 @@ setloggedUser(JSON.parse(localStorage.getItem("user_details")))
 
   return (
       <Box
-      display={{ base: setselectedchat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedchat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
@@ -97,7 +97,7 @@ setloggedUser(JSON.parse(localStorage.getItem("user_details")))
                 key={chat._id}
                 >
                     <Text>
-                      {chats.isGroupChat? chats.ChatName:
+                      {chats?.isGroupChat? chats.ChatName:
                       getSender(loggedUser, chats.users)
                       }
                     </Text>
