@@ -81,7 +81,7 @@ const submitHandler =async ()=>{
           localStorage.setItem("user_details",JSON.stringify(data));
         setloading(false);
         // history.push('/chats');
-        navigate('/chats');
+        navigate('/login');
 
 
     } catch (error) {

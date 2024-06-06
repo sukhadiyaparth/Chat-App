@@ -97,9 +97,10 @@ useEffect(()=>{
                 key={chat._id}
                 >
                     <Text>
-                      {chats?.isGroupChat? chats.ChatName:
-                      getSender(loggedUser, chats.users)
-                      }
+                      {/* {chats?.isGroupChat? chats.ChatName:
+                      getSender(loggedUser, chats.user)
+                      } */}
+                      <>hiia</>
                     </Text>
                 </Box>
               ))
