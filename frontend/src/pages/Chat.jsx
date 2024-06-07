@@ -10,24 +10,30 @@ function Chat() {
   const { user } = Chatstate();
   const navigate = useNavigate()
   const [fetchAgain, setFetchAgain] = useState(false);
-  console.log(user)
-    if(!user){
-      navigate("/")
-    }
+
+
+  useEffect(()=>{
+   
+        const userInfo = JSON.parse(localStorage.getItem("user_details"));
+        if(!userInfo){
+            navigate('/')  
+        }
+  })
+   
  
 
   return (
 
     <div style={{ width: "100%" }}>
-     <SideDrawer/> 
+    {user&& <SideDrawer/> } 
       <Box 
        display="flex"
        justifyContent="space-between"
        w="100%"
        h="91.5vh"
        p="10px">
-        <MyChat fetchAgain={fetchAgain} />
-       <ChatBox  fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}  />
+      {user&&  <MyChat fetchAgain={fetchAgain} />}
+     {user&&<ChatBox  fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}  />}
       </Box>
 
 

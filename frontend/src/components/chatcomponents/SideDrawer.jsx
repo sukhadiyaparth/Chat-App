@@ -28,13 +28,14 @@ function SideDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   const toast = useToast();
+  const { user , setselectedchat ,setuser, chat,setchat } = Chatstate();
 
 
   const logoutHandler = () => {
     localStorage.removeItem("user_details")
     navigate('/')
+    setuser(null)
   }
-  const { user , setselectedchat , chat,setchat } = Chatstate();
   
   const  handleSearch = async()=>{
         if(!search){
