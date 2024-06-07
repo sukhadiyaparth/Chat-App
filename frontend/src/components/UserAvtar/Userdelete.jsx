@@ -15,7 +15,7 @@ function Userdelete({ user, handleFunction}) {
       cursor="pointer"
       onClick={handleFunction}
     >
-      {user.name}
+      {user?.name}
       {/* {admin === user._id && <span> (Admin)</span>} */}
       <CloseIcon pl={1} />
     </Badge>

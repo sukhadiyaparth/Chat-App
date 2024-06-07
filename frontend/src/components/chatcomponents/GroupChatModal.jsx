@@ -30,7 +30,7 @@ function GroupChatModal({children}) {
 
     const toast = useToast()
 
-    const{user, chats , setchat} = Chatstate();
+    const{user, chat , setchat} = Chatstate();
     const handleSearch = async(usersearch)=>{
       setsearch(usersearch);
     if (!usersearch) {
@@ -78,15 +78,16 @@ function GroupChatModal({children}) {
             Authorization: `Bearer ${user?.JwtToken}`,
           },
         };
-        const { data } = await axios.post(
+        const response = await axios.post(
           `/api/chat/group`,
           {
             name: groupChatName,
-            users: JSON.stringify(selectedusaer.map((u) => u._id)),
+            user: JSON.stringify(selectedusaer.map((u) => u._id)),
           },
           config
         );
-        setchat([data, ...chats]);
+        console.log(response?.data)
+        setchat([response?.data, ...chat]);
         onClose();
         toast({
           title: "New Group Chat Created!",

@@ -6,8 +6,9 @@ import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/LogicsChat';
 import GroupChatModal from './GroupChatModal'
-function MyChat({fetchAgain}) {
+function MyChat({ fetchAgain }) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
+  console.log(user?.JwtToken)
   const [loggedUser , setloggedUser] = useState()
   const toast = useToast();
 
@@ -24,7 +25,7 @@ const fetchChat = async()=> {
   } catch (error) {
     toast({
       title: "Error Occured!",
-      description: "Failed to Load the chats",
+      description: "Failed to aaaa Load the chats",
       status: "error",
       duration: 5000,
       isClosable: true,
@@ -33,16 +34,18 @@ const fetchChat = async()=> {
   }
 };
 
+
 useEffect(()=>{
 setloggedUser(JSON.parse(localStorage.getItem("user_details")))
-  fetchChat();
+fetchChat();
+    // eslint-disable-next-line
 
 },[fetchAgain])
 
 
   return (
       <Box
-      display={{ base: setselectedchat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedchat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
@@ -82,7 +85,7 @@ setloggedUser(JSON.parse(localStorage.getItem("user_details")))
                         w="full"
 
         >
-          {chat ?<Stack overflowY="scroll">
+          {chat ?(<Stack overflowY="scroll">
 
             {
               chat.map((chats)=>(
@@ -94,18 +97,24 @@ setloggedUser(JSON.parse(localStorage.getItem("user_details")))
                 px={3}
                 py={2}
                 borderRadius="lg"
-                key={chat._id}
+                key={chat?._id}
                 >
                     <Text>
-                      {chats.isGroupChat? chats.ChatName:
-                      getSender(loggedUser, chats.users)
+                      {chats?.isGroupChat? chats.ChatName:
+                      getSender(loggedUser, chats?.users)
                       }
+
+
+{/* {!chats?.isGroupChat
+                    && getSender(loggedUser, chats?.users)
+                    : chats.chatName}
+} */}
                     </Text>
                 </Box>
               ))
             }
 
-          </Stack> :(<ChatLoading/>)}
+          </Stack> ):(<ChatLoading/>)}
         </Box>
 
       </Box>

@@ -28,13 +28,14 @@ function SideDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   const toast = useToast();
+  const { user , setselectedchat ,setuser, chat,setchat } = Chatstate();
 
 
   const logoutHandler = () => {
     localStorage.removeItem("user_details")
     navigate('/')
+    setuser(null)
   }
-  const { user , setselectedchat , chat,setchat } = Chatstate();
   
   const  handleSearch = async()=>{
         if(!search){
@@ -88,7 +89,7 @@ function SideDrawer() {
       };
       const { data } = await axios.post(`/api/chat`, {userId} , config);
       // we update the chat or apnded the chat if it is exist
-      if (!chat.find((c) => c._id === data._id)) setchat([data, ...chat]);
+      if (!chat.find((c) => c._id === data?._id)) setchat([data, ...chat]);
       setselectedchat(data);
       setChatloading(false);
       onClose();
@@ -140,7 +141,7 @@ function SideDrawer() {
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <Avatar size="sm" cursor="pointer" name={user.name}
+              <Avatar size="sm" cursor="pointer" name={user?.name}
               />
             </MenuButton>
             <MenuList>

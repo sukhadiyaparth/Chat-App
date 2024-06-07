@@ -13,13 +13,13 @@ function ChatProvider(props) {
     const [chat,setchat] = useState([]) ;
 
 
-
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("user_details"));
-        setuser(userInfo);
+        // console.log(userInfo)
+        if(userInfo){
+        setuser(userInfo);}
     
-      
-
+   
       }, []);
     
     

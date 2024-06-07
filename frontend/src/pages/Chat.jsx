@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Chatstate} from '../context/ChatProvider'
 import { Box ,Flex   } from '@chakra-ui/react'
 import SideDrawer from '../components/chatcomponents/SideDrawer';
@@ -9,24 +9,31 @@ import { redirect, useNavigate } from 'react-router-dom';
 function Chat() {
   const { user } = Chatstate();
   const navigate = useNavigate()
-  console.log(user)
-    if(!user){
-      navigate("/")
-    }
+  const [fetchAgain, setFetchAgain] = useState(false);
+
+
+  useEffect(()=>{
+   
+        const userInfo = JSON.parse(localStorage.getItem("user_details"));
+        if(!userInfo){
+            navigate('/')  
+        }
+  })
+   
  
 
   return (
 
     <div style={{ width: "100%" }}>
-      {user && <SideDrawer/> }
+    {user&& <SideDrawer/> } 
       <Box 
        display="flex"
        justifyContent="space-between"
        w="100%"
        h="91.5vh"
        p="10px">
-         {user&&<MyChat/>}
-         {user&&<ChatBox/>}
+      {user&&  <MyChat fetchAgain={fetchAgain} />}
+     {user&&<ChatBox  fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}  />}
       </Box>
 
 

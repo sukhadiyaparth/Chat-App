@@ -24,10 +24,10 @@ const UserListItem = ({user, handleFunction }) => {
         mr={2}
         size="sm"
         cursor="pointer"
-        name={user.name}
+        name={user?.name}
       />
       <Box>
-        <Text>{user.name}</Text>
+        <Text>{user?.name}</Text>
 
     
       </Box>

@@ -1,15 +1,17 @@
-import { Button, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
+import { Button, IconButton, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
+import { ViewIcon } from "@chakra-ui/icons";
 
 function ProfileModal({children,user}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+console.log(user?.name)
   return (
     <>{
-        children && (
+        children ? (
             <span onClick={onOpen}>{children}</span>
 
-        )}
+        ):(        <IconButton display={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+      )}
         
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -19,7 +21,7 @@ function ProfileModal({children,user}) {
           fontFamily ="Work sans"
           display="flex"
           justifyContent="center"
-          >{user.name}</ModalHeader>
+          >{user?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
            <Image
