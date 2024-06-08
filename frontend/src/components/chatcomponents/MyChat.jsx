@@ -11,7 +11,7 @@ function MyChat({ fetchAgain }) {
   console.log(user?.JwtToken)
   const [loggedUser , setloggedUser] = useState()
   const toast = useToast();
-
+console.log(chat);
 const fetchChat = async()=> {
   try {
     const config = {

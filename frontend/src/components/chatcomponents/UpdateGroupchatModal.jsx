@@ -33,7 +33,56 @@ function UpdateGroupchatModal({ fetchAgain, setFetchAgain }) {
     const toast = useToast();
 
 
-    const handleRemove = (Removeuser) => {
+    const handleRemove = async(Removeuser) => {
+      // if (selectedchat?.groupAdmin._id !== user._id && Removeuser._id !== user._id) {
+      //   toast({
+      //     title: "Only admins can remove someone!",
+      //     status: "error",
+      //     duration: 5000,
+      //     isClosable: true,
+      //     position: "bottom",
+      //   });
+      //   return;
+      // }
+
+
+      try {
+        setloading(true);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user?.JwtToken}`,
+          },
+        };
+        const { data } = await axios.put(
+          `/api/chat/groupremove`,
+          {
+            chatId: selectedchat?._id,
+            userId: Removeuser?._id,
+          },
+          config
+        );
+  
+        Removeuser?._id === user?._id ? setselectedchat() : setselectedchat(data);
+        setFetchAgain(!fetchAgain);
+        // fetchMessages();
+        setloading(false);
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setloading(false);
+      }
+      setgroupChatname("");
+
+
+
+
+
 
     }
     const handleAddUser = async(Adduser) => {
