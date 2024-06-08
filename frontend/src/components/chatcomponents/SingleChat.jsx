@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Text } from "@chakra-ui/layout";
+import axios from 'axios';
+
 import { Chatstate } from '../../context/ChatProvider';
-import { IconButton } from '@chakra-ui/react';
+import { FormControl, IconButton, Input, Spinner , useToast} from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender , getSenderFull } from '../../config/LogicsChat';
 import ProfileModal from './ProfileModal';
@@ -9,9 +11,92 @@ import UpdateGroupchatModal from './UpdateGroupchatModal';
 
 function SingleChat({fetchAgain,setFetchAgain}) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
-  console.log(selectedchat)
-  const setSelectedChat =()=>{}
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+const  toast = useToast();
 
+
+const fetchMessages = async () => {
+  if (!selectedchat) return;
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user?.JwtToken}`,
+      },
+    };
+
+    setLoading(true);
+
+    const { data } = await axios.get(
+      `/api/messages/${selectedchat?._id}`,
+      config
+    );
+    setMessages(data);
+    setLoading(false);
+
+  } catch (error) {
+    toast({
+      title: "Error Occured!",
+      description: "Failed to Load the Messages",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "bottom",
+    });
+  }
+};
+
+
+
+  const sendMessage =async(event)=>{
+    if (event.key === "Enter" && newMessage) {
+ try {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${user?.JwtToken}`,
+    },
+  };
+
+  setNewMessage("");
+  const { data } = await axios.post(
+    "/api/messages",
+    {
+      content: newMessage,
+      chatId: selectedchat?._id,
+    },
+    config
+  );
+
+  setMessages([...messages, data]);
+
+
+  
+ } catch (error) {
+  toast({
+    title: "Error Occured!",
+    description: "Failed to send the Message",
+    status: "error",
+    duration: 5000,
+    isClosable: true,
+    position: "top-right2",
+  });
+ }
+
+    }
+  }
+  const typingHandler =(e)=>{
+    setNewMessage(e.target.value)
+  }
+
+
+  useEffect(() => {
+    fetchMessages();
+
+    // eslint-disable-next-line
+  }, [selectedchat]);
   return (
     <>
     {
@@ -40,7 +125,6 @@ function SingleChat({fetchAgain,setFetchAgain}) {
             
               {selectedchat?.ChatName?.toUpperCase()}
                   <UpdateGroupchatModal
-                    // fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
                   />
@@ -49,6 +133,47 @@ function SingleChat({fetchAgain,setFetchAgain}) {
 
 
           </Text>
+          <Box
+           display="flex"
+           flexDir="column"
+           justifyContent="flex-end"
+           p={3}
+           bg="#E8E8E8"
+           w="100%"
+           h="100%"
+           borderRadius="lg"
+           overflowY="hidden">
+               {loading ? (
+              <Spinner
+                size="xl"
+                w={20}
+                h={20}
+                alignSelf="center"
+                margin="auto"
+              />
+            ) : (
+              <div className="messages">
+              </div>
+            )}
+
+<FormControl
+              onKeyDown={sendMessage}
+              id="first-name"
+              isRequired
+              mt={3}
+            >
+
+<Input
+                variant="filled"
+                bg="#E0E0E0"
+                placeholder="Enter a message.."
+                value={newMessage}
+                onChange={typingHandler}
+              />
+                          </FormControl>
+
+
+          </Box>
        
        </> 
       ):(
