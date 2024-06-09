@@ -8,6 +8,8 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender , getSenderFull } from '../../config/LogicsChat';
 import ProfileModal from './ProfileModal';
 import UpdateGroupchatModal from './UpdateGroupchatModal';
+import "./style.css";
+import ScrollableChar from './ScrollableChar';
 
 function SingleChat({fetchAgain,setFetchAgain}) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
@@ -127,6 +129,7 @@ const fetchMessages = async () => {
                   <UpdateGroupchatModal
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
+                    fetchMessages={fetchMessages}
                   />
             
             </>)}
@@ -153,6 +156,7 @@ const fetchMessages = async () => {
               />
             ) : (
               <div className="messages">
+              <ScrollableChar messages={messages}/>
               </div>
             )}
 

@@ -21,7 +21,7 @@ import { Chatstate } from '../../context/ChatProvider';
 import Userdelete from '../UserAvtar/Userdelete';
 import axios from 'axios';
 import UserListItem from '../UserAvtar/UserListItem';
-function UpdateGroupchatModal({ fetchAgain, setFetchAgain }) {
+function UpdateGroupchatModal({ fetchAgain, setFetchAgain ,fetchMessages}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatname, setgroupChatname] = useState();
     const [search, setsearch] = useState();
@@ -64,7 +64,7 @@ function UpdateGroupchatModal({ fetchAgain, setFetchAgain }) {
   
         Removeuser?._id === user?._id ? setselectedchat() : setselectedchat(data);
         setFetchAgain(!fetchAgain);
-        // fetchMessages();
+        fetchMessages();
         setloading(false);
       } catch (error) {
         toast({
