@@ -1,14 +1,18 @@
 import React from 'react'
 import  ScrollableFeed from 'react-scrollable-feed'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../../config/LogicsChat'
+import { Avatar, Tooltip } from '@chakra-ui/react'
+import { Chatstate } from '../../context/ChatProvider';
 function ScrollableChar({messages}) {
+  const{user} = Chatstate();
+
   return (
     <ScrollableFeed>
         {messages && 
         messages.map((m,i)=>(
             <div style={{display:"flex"}} key={m?._id}>
-                {(isSameSender(messages, m, i, user._id) ||
-              isLastMessage(messages, i, user._id)) && (
+                {(isSameSender(messages, m, i, user?._id) ||
+              isLastMessage(messages, i, user?._id)) && (
               <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
                 <Avatar
                   mt="7px"

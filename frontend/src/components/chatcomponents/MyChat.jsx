@@ -8,10 +8,8 @@ import { getSender } from '../../config/LogicsChat';
 import GroupChatModal from './GroupChatModal'
 function MyChat({ fetchAgain }) {
   const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
-  console.log(user?.JwtToken)
   const [loggedUser , setloggedUser] = useState()
   const toast = useToast();
-console.log(chat);
 const fetchChat = async()=> {
   try {
     const config = {
@@ -100,6 +98,9 @@ fetchChat();
                 key={chat?._id}
                 >
                     <Text>
+                      {
+                      console.log(chats?.users, "users")
+                      }
                       {chats?.isGroupChat? chats.ChatName:
                       getSender(loggedUser, chats?.users)
                       }
