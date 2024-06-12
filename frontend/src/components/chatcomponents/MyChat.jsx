@@ -99,7 +99,6 @@ fetchChat();
                 >
                     <Text>
                       {
-                      console.log(chats?.users, "users")
                       }
                       {chats?.isGroupChat? chats.ChatName:
                       getSender(loggedUser, chats?.users)
