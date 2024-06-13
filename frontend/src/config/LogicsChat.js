@@ -1,5 +1,9 @@
 export const getSender=(loggedUser,users)=>{
-    return users[0]._id === loggedUser?._id ? users[1]?.name:  users[0]?.name
+  if (!users || users.length < 2) {
+    return null; // or handle the error as needed
+  }
+  
+  return users[0]?._id === loggedUser?._id ? users[1]?.name : users[0]?.name;
 }
 
 
