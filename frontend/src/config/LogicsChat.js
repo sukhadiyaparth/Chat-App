@@ -1,9 +1,13 @@
 export const getSender=(loggedUser,users)=>{
-  if (!users || users.length < 2) {
-    return null; // or handle the error as needed
-  }
-  
-  return users[0]?._id === loggedUser?._id ? users[1]?.name : users[0]?.name;
+
+  console.log(loggedUser , "loggedUser")
+
+   let UserName = users?.map((item)=>{
+
+    return item?._id !== loggedUser?._id ? item?.name : null ;   }).filter((names)=>names!==loggedUser?.name&&names) 
+
+    return UserName
+
 }
 
 

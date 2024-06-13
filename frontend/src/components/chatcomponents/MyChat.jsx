@@ -98,17 +98,13 @@ fetchChat();
                 key={chat?._id}
                 >
                     <Text>
-                      {
-                      }
+                     
                       {chats?.isGroupChat? chats.ChatName:
                       getSender(loggedUser, chats?.users)
                       }
 
 
-{/* {!chats?.isGroupChat
-                    && getSender(loggedUser, chats?.users)
-                    : chats.chatName}
-} */}
+
                     </Text>
                 </Box>
               ))
