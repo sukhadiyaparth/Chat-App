@@ -17,52 +17,100 @@ const accessChat = asyncHandler(async(req,res)=>{
 // this code is use for create chat with db
 //.....
 // this code find login user id and requted userid
-    var isChat = await  Chat.find({
-        isGroupChat:false,
-        $and : [
-          //this is login user user id
-            {users : {$elemMatch:{$eq:req?.user?.id }}},
-          // this is login current user
-            {users : {$elemMatch:{ $eq:userId }}},
+//     var isChat = await  Chat.find({
+//         isGroupChat:false,
+//         $and : [
+//           //this is login user user id
+//             {users : {$elemMatch:{$eq:req?.user?.id }}},
+//           // this is login current user
+//             {users : {$elemMatch:{ $eq:userId }}},
 
-        ]
+//         ]
 
         
-    }).populate("users","-password")
-    // it means -password = password filed is not 
-    //last message populate indicates chat,content, sender filed
-    .populate("lastmessage")
+//     }).populate("users","-password")
+//     // it means -password = password filed is not 
+//     //last message populate indicates chat,content, sender filed
+//     .populate("lastmessage")
 
-    isChat = await User.populate(isChat, {
-      path: "latestMessage.sender",
-      select: "name img email",
-      });
+//     isChat = await User.populate(isChat, {
+//       path: "latestMessage.sender",
+//       select: "name img email",
+//       });
     
-      // this code for chat exsits
-      if (isChat.length > 0) {
-        res.send(isChat[0]);
-      }
-      // it is not exist then create a chat
-      else {
-        var chatData = {
-          chatName: "sender",
-          isGroupChat: false,
-          users: [req?.user?.id, userId],
-        }};
-//......
+//       // this code for chat exsits
+//       if (isChat.length > 0) {
+//         res.send(isChat[0]);
+//       }
+//       // it is not exist then create a chat
+//       else {
+//         var chatData = {
+//           chatName: "sender",
+//           isGroupChat: false,
+//           users: [req?.user?.id, userId],
+//         }};
+// //......
 
-    // this code is create the chat
-        try {
-          const createdChat = await Chat.create(chatData);
-          const FullChat = await Chat.findOne({ id: createdChat?.id }).populate(
-            "users",
-            "-password"
-          );
-          res.status(200).json(FullChat);
-        } catch (error) {
-          res.status(400);
-          throw new Error(error.message);
-        }
+//     // this code is create the chat
+//         try {
+//           const createdChat = await Chat.create(chatData);
+//           const FullChat = await Chat.findOne({ id: createdChat?.id }).populate(
+//             "users",
+//             "-password"
+//           );
+//           res.status(200).json(FullChat);
+//         } catch (error) {
+//           res.status(400);
+//           throw new Error(error.message);
+//         }
+
+
+var isChat = await  Chat.find({
+          $and : [
+            //this is login user user id
+              {users : {$elemMatch:{$eq:req?.user?.id }}},
+            // this is login current user
+              {users : {$elemMatch:{ $eq:userId }}},
+  
+          ]
+  
+          
+      }).populate("users","-password")
+      // it means -password = password filed is not 
+      //last message populate indicates chat,content, sender filed
+      .populate("lastmessage")
+
+      isChat = await User.populate(isChat, {
+              path: "latestMessage.sender",
+              select: "name img email",
+              });
+            
+              if (isChat.length > 0) {
+                        res.send(isChat[0]);
+                      }
+
+
+                      else {
+                        var chatData = {
+                          chatName: "sender",
+                          isGroupChat: false,
+                          users: [req?.user?.id, userId],
+                        };
+                    
+                        try {
+                          const createdChat = await Chat.create(chatData);
+                          const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+                            "users",
+                            "-password"
+                          );
+                          res.status(200).json(FullChat);
+                        } catch (error) {
+                          res.status(400);
+                          throw new Error(error.message);
+                        }
+                      }
+  
+
 });
 
 
