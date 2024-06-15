@@ -45,7 +45,7 @@ const fetchMessages = async () => {
     setLoading(false);
 
     socket.emit("Join Chat With Id", selectedchat?._id);
-
+    console.log("messages", data)
   } catch (error) {
     toast({
       title: "Error Occured!",
