@@ -44,7 +44,6 @@ const       SignUp = asyncHandler( async    (req,res)=>{
 const Login = asyncHandler(async(req,res)=>{
     const {email,password} = req?.body;
    //call virtual function
-   console.log(email,password)
 try {
 
    const {user} = await User.matchpassword(email,password);

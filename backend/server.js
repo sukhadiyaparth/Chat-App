@@ -37,7 +37,7 @@ app.use(errorHandler);
 
 const server = app.listen(
     PORT,
-    console.log(`Server running on PORT ${PORT}...`.yellow.bold)
+    console.log(`Server running on PORT ${PORT}...`)
   );
 
   // this code is handle corse error
@@ -50,13 +50,13 @@ const server = app.listen(
   });
 
   io.on("connection",(socket)=>{
-    console.log("connected to socket.io");
-    socket.on("Setup", (userData)=>{
+    
+    socket.on("setup", (userData)=>{
         // create a room for one to one communication
-        socket.join(userData.id)
+        socket.join(userData?._id)
 
 
-        socket.emit("connected")
+        socket.emit("connected userid")
     })
 
     socket.on("join Chat", (room)=>{
@@ -66,14 +66,28 @@ const server = app.listen(
         console.log("User Joined Room :"+room);
     })
 
-    socket.on("new messages", (newMessageRecieved)=>{
+    socket.on("typing", (room) => socket.in(room).emit("typing"));
+    socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+    socket.on("new message", (newMessageRecieved)=>{
         // create a room for one to one communication
-        var chat = newMessageRecieved.chat
-        if(!chat.users) return console.log("chat.users is not define");
+        var chat = newMessageRecieved?.chat
+        if(!chat?.users) return console.log("chat.users is not define");
+
+        chat?.users?.forEach((user) =>{
+            if(user?._id == newMessageRecieved?.sender?._id ) return;
+            socket.in(user?._id).emit("message recieved", newMessageRecieved)
+           
+        })
+    });
+
+
+    socket.off("setup", ()=>{
+        console.log("user Disconnected");
+        socket.leave(userData?._id)
     })
 
 
-    
 
 
 
