@@ -17,8 +17,8 @@ var socket, selectedChatCompare;
 
 
 function SingleChat({fetchAgain,setFetchAgain}) {
-  const { user , selectedchat,setselectedchat , chat,setchat } = Chatstate();
-  const [messages, setMessages] = useState([]);
+  const { user , selectedchat,setselectedchat  } = Chatstate();
+    const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketconnected , setsocketconnected] = useState(false)
@@ -26,7 +26,7 @@ const  toast = useToast();
 
 
 const fetchMessages = async () => {
-  if (!selectedchat) return;
+  if (!selectedchat?._id) return;
 
   try {
     const config = {
@@ -44,8 +44,11 @@ const fetchMessages = async () => {
     setMessages(data);
     setLoading(false);
 
+
     socket.emit("Join Chat With Id", selectedchat?._id);
     console.log("messages", data)
+
+
   } catch (error) {
     toast({
       title: "Error Occured!",
@@ -53,7 +56,7 @@ const fetchMessages = async () => {
       status: "error",
       duration: 5000,
       isClosable: true,
-      position: "bottom",
+      position: "top-right",
     });
   }
 };
@@ -61,16 +64,18 @@ const fetchMessages = async () => {
 
 
   const sendMessage =async(event)=>{
-    if (event.key === "Enter" && newMessage) {
- try {
+    if (event?.key === "Enter" && newMessage) {
+      
+
+      try {
   const config = {
     headers: {
       "Content-type": "application/json",
       Authorization: `Bearer ${user?.JwtToken}`,
     },
   };
+  setNewMessage(" ");
 
-  setNewMessage("");
   const { data } = await axios.post(
     "/api/messages",
     {
@@ -79,6 +84,7 @@ const fetchMessages = async () => {
     },
     config
   );
+  console.log(data, "data")
 
   setMessages([...messages, data]);
 
@@ -91,14 +97,14 @@ const fetchMessages = async () => {
     status: "error",
     duration: 5000,
     isClosable: true,
-    position: "top-right2",
+    position: "top-right",
   });
  }
 
     }
   }
   const typingHandler =(e)=>{
-    setNewMessage(e.target.value)
+    setNewMessage(e?.target?.value)
   }
 
 
@@ -147,13 +153,13 @@ const fetchMessages = async () => {
                   <UpdateGroupchatModal
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
-                    fetchMessages={fetchMessages}
+                    // fetchMessages={fetchMessages}
                   />
             
             </>)}
 
 
-          </Text>
+          </Text>   
           <Box
            display="flex"
            flexDir="column"
@@ -178,14 +184,14 @@ const fetchMessages = async () => {
               </div>
             )}
 
-<FormControl
+             <FormControl
               onKeyDown={sendMessage}
               id="first-name"
               isRequired
               mt={3}
             >
 
-<Input
+              <Input
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
