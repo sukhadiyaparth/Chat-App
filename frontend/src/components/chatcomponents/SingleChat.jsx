@@ -10,12 +10,18 @@ import ProfileModal from './ProfileModal';
 import UpdateGroupchatModal from './UpdateGroupchatModal';
 import "./style.css";
 import ScrollableChar from './ScrollableChar';
+import io from "socket.io-client"
+const ENDPOINT = "http://localhost:1000";
+var socket, selectedChatCompare;
+
+
 
 function SingleChat({fetchAgain,setFetchAgain}) {
   const { user , selectedchat,setselectedchat  } = Chatstate();
     const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [socketconnected , setsocketconnected] = useState(false)
 const  toast = useToast();
 
 
@@ -37,7 +43,12 @@ const fetchMessages = async () => {
     );
     setMessages(data);
     setLoading(false);
- console.log("messages", data)
+
+
+    socket.emit("Join Chat With Id", selectedchat?._id);
+    console.log("messages", data)
+
+
   } catch (error) {
     toast({
       title: "Error Occured!",
@@ -102,6 +113,16 @@ const fetchMessages = async () => {
 
     // eslint-disable-next-line
   }, [selectedchat]);
+
+
+
+  useEffect(()=>{
+    // connection code
+    socket = io(ENDPOINT)
+
+    socket.emit("setup",user)
+    socket.on ("conncted " ,()=>setsocketconnected(true))
+  })
   return (
     <>
     {

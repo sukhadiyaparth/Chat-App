@@ -31,6 +31,50 @@ app.use(errorHandler);
 
 
 
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`App listening on port ${PORT}`);
+// });
+
+const server = app.listen(
+    PORT,
+    console.log(`Server running on PORT ${PORT}...`.yellow.bold)
+  );
+
+  // this code is handle corse error
+  const io = require("socket.io")(server, {
+    pingTimeout: 60000,
+    cors: {
+      origin: "http://localhost:3000",
+      // credentials: true,
+    },
+  });
+
+  io.on("connection",(socket)=>{
+    console.log("connected to socket.io");
+    socket.on("Setup", (userData)=>{
+        // create a room for one to one communication
+        socket.join(userData.id)
+
+
+        socket.emit("connected")
+    })
+
+    socket.on("join Chat", (room)=>{
+        // create a room for one to one communication
+        socket.join(room)
+
+        console.log("User Joined Room :"+room);
+    })
+
+    socket.on("new messages", (newMessageRecieved)=>{
+        // create a room for one to one communication
+        var chat = newMessageRecieved.chat
+        if(!chat.users) return console.log("chat.users is not define");
+    })
+
+
+    
+
+
+
+  })
