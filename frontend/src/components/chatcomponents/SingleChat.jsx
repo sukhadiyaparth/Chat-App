@@ -11,13 +11,17 @@ import UpdateGroupchatModal from './UpdateGroupchatModal';
 import "./style.css";
 import ScrollableChar from './ScrollableChar';
 import io from "socket.io-client"
+import Lottie from "react-lottie";
+import animationData from "../animations/typing.json";
+
+
 const ENDPOINT = "http://localhost:1000";
 var socket, selectedChatCompare;
 
 
 
 function SingleChat({fetchAgain,setFetchAgain}) {
-  const { user , selectedchat,setselectedchat  } = Chatstate();
+  const { user , selectedchat,setselectedchat , notification , setnotification  } = Chatstate();
     const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -129,6 +133,10 @@ useEffect(()=>{
     console.log(newMessageRecieved, "newMessageRecieved");
     if(!selectedChatCompare || selectedChatCompare?._id !==newMessageRecieved.chat?._id){
       // give notification
+      if (!notification.includes(newMessageRecieved)) {
+        setnotification([newMessageRecieved, ...notification]);
+        setFetchAgain(!fetchAgain);
+      }
     }else{
       setMessages([...messages, newMessageRecieved])
     }
@@ -229,7 +237,12 @@ const typingHandler =(e)=>{
               isRequired
               mt={3}
             >
-            {isTyping ? <div>Loading...</div>:<></>}
+            {isTyping && <div><Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  /></div>}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
