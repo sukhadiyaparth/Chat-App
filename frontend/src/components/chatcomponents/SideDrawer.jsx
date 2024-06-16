@@ -18,6 +18,7 @@ import { Chatstate } from '../../context/ChatProvider';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvtar/UserListItem';
+import { getSender } from '../../config/LogicsChat';
 
 function SideDrawer() {
   const [search, setsearch] = useState("");
@@ -28,7 +29,7 @@ function SideDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   const toast = useToast();
-  const { user , setselectedchat ,setuser, chat,setchat } = Chatstate();
+  const { user , setselectedchat ,setuser, chat,setchat, notification , setnotification } = Chatstate();
 
 
   const logoutHandler = () => {
@@ -137,7 +138,17 @@ function SideDrawer() {
             <MenuButton p={1}>
               <BellIcon fontSize='2xl' m={1} />
             </MenuButton>
-            {/* <MenuList></MenuList> */}
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif)=>{
+                <MenuItem key={notif?._id}>
+                  {
+                    notif?.chat?. isGroupChat ? `New Message in ${notif?.chat?.ChatName}`:`New Message from ${getSender(user,notif?.chat?.users)}`
+                  }
+                
+                </MenuItem>
+              })}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>

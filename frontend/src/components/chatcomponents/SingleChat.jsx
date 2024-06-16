@@ -11,17 +11,24 @@ import UpdateGroupchatModal from './UpdateGroupchatModal';
 import "./style.css";
 import ScrollableChar from './ScrollableChar';
 import io from "socket.io-client"
+import Lottie from "react-lottie";
+import animationData from "../animations/typing.json";
+
+
 const ENDPOINT = "http://localhost:1000";
 var socket, selectedChatCompare;
 
 
 
 function SingleChat({fetchAgain,setFetchAgain}) {
-  const { user , selectedchat,setselectedchat  } = Chatstate();
+  const { user , selectedchat,setselectedchat , notification , setnotification  } = Chatstate();
     const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketconnected , setsocketconnected] = useState(false)
+  const [typing , settyping] =useState(false);
+  const [isTyping , setISTyping] =useState(false);
+
 const  toast = useToast();
 
 
@@ -44,8 +51,8 @@ const fetchMessages = async () => {
     setMessages(data);
     setLoading(false);
 
-
-    socket.emit("Join Chat With Id", selectedchat?._id);
+console.log(selectedchat?._id , "id");
+    socket.emit("join Chat", selectedchat?._id);
     console.log("messages", data)
 
 
@@ -65,8 +72,7 @@ const fetchMessages = async () => {
 
   const sendMessage =async(event)=>{
     if (event?.key === "Enter" && newMessage) {
-      
-
+      socket.emit("stop typing", selectedchat?._id)
       try {
   const config = {
     headers: {
@@ -84,10 +90,9 @@ const fetchMessages = async () => {
     },
     config
   );
-  console.log(data, "data")
 
   setMessages([...messages, data]);
-
+socket.emit("new message",data)
 
   
  } catch (error) {
@@ -103,26 +108,68 @@ const fetchMessages = async () => {
 
     }
   }
-  const typingHandler =(e)=>{
-    setNewMessage(e?.target?.value)
-  }
-
-
-  useEffect(() => {
-    fetchMessages();
-
-    // eslint-disable-next-line
-  }, [selectedchat]);
-
-
+ 
 
   useEffect(()=>{
     // connection code
     socket = io(ENDPOINT)
-
+console.log(user);
     socket.emit("setup",user)
     socket.on ("conncted " ,()=>setsocketconnected(true))
+    socket.on("typing" , ()=> setISTyping(true));
+    socket.on("stop typing" , ()=> setISTyping(false))
+
+
+    
   })
+
+  useEffect(() => {
+    fetchMessages();
+    selectedChatCompare = selectedchat
+    // eslint-disable-next-line
+  }, [selectedchat]);
+useEffect(()=>{
+  socket.on("message recieved", (newMessageRecieved)=>{
+    console.log(newMessageRecieved, "newMessageRecieved");
+    if(!selectedChatCompare || selectedChatCompare?._id !==newMessageRecieved.chat?._id){
+      // give notification
+      if (!notification.includes(newMessageRecieved)) {
+        setnotification([newMessageRecieved, ...notification]);
+        setFetchAgain(!fetchAgain);
+      }
+    }else{
+      setMessages([...messages, newMessageRecieved])
+    }
+  })
+})
+
+ 
+const typingHandler =(e)=>{
+  setNewMessage(e?.target?.value)
+  
+  if (!socketconnected) return;
+
+  if (!typing) {
+    settyping(true);
+    socket.emit("typing", selectedchat?._id);
+  }
+  let lastTypingTime = new Date().getTime();
+  var timerLength = 3000;
+  setTimeout(() => {
+    var timeNow = new Date().getTime();
+    var timeDiff = timeNow - lastTypingTime;
+    if (timeDiff >= timerLength && typing) {
+      socket.emit("stop typing", selectedchat?._id);
+      settyping(false);
+    }
+  }, timerLength);
+
+
+
+}
+
+
+
   return (
     <>
     {
@@ -190,7 +237,12 @@ const fetchMessages = async () => {
               isRequired
               mt={3}
             >
-
+            {isTyping && <div><Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  /></div>}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
