@@ -119,15 +119,15 @@ if(userpic.type === "image/png" || userpic.type === "image/jpeg"){
     const  data = new FormData();
     data.append("file",userpic);
     data.append("upload_preset","Chat_Application");
-    data.append("cloud_name","dec7lhw67")
-    fetch("https://api.cloudinary.com/v1_1/dec7lhw67/image/upload",{
+    data.append("cloud_name","dtqwfrnhm")
+    fetch("https://api.cloudinary.com/v1_1/dtqwfrnhm/image/upload",{
         method: "Post",
         body : data
     }).then((res)=>{
        return res.json();
     }).then(data=>{
         setimg(data?.url?.toString());
-        console.log(data?.url?.toString());
+        console.log(data?.url?.toString(),"images");
 
         setloading(false)
     }).catch((err)=>{
@@ -138,7 +138,7 @@ if(userpic.type === "image/png" || userpic.type === "image/jpeg"){
     toast({
         title: 'Please Select Image',
         status: 'warning',
-        duration: 6000,
+        duration: 5000,
         isClosable: true,
         position: "top-right"
       });
@@ -215,7 +215,7 @@ if(userpic.type === "image/png" || userpic.type === "image/jpeg"){
         type='file'
         p={1.5}
         placeholder='Enter Your Photo'
-        onChange={(e)=>  cloudinar(e.target.files[0])}        
+        onChange={(e)=>  cloudinar(e?.target?.files[0])}        
         />
 
     </FormControl>

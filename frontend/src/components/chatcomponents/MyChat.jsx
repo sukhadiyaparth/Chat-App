@@ -27,7 +27,7 @@ const fetchChat = async()=> {
       status: "error",
       duration: 5000,
       isClosable: true,
-      position: "bottom-left",
+      position: "top-right",
     });
   }
 };

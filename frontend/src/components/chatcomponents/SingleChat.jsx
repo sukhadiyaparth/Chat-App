@@ -12,12 +12,19 @@ import "./style.css";
 import ScrollableChar from './ScrollableChar';
 import io from "socket.io-client"
 import Lottie from "react-lottie";
-import animationData from "../animations/typing.json";
+import animationData from "../../animation/typing.json";
 
 
 const ENDPOINT = "http://localhost:1000";
 var socket, selectedChatCompare;
-
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 
 
 function SingleChat({fetchAgain,setFetchAgain}) {
