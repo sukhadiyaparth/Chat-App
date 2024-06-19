@@ -55,7 +55,7 @@ function GroupChatModal({children}) {
         status: "error",
         duration: 5000,
         isClosable: true,
-        position: "bottom-left",
+        position: "top-right",
       });
     }
     }
@@ -67,7 +67,7 @@ function GroupChatModal({children}) {
           status: "warning",
           duration: 5000,
           isClosable: true,
-          position: "top",
+          position: "top-right",
         });
         return;
       }
@@ -94,7 +94,7 @@ function GroupChatModal({children}) {
           status: "success",
           duration: 5000,
           isClosable: true,
-          position: "bottom",
+          position: "top-right",
         });
       } catch (error) {
         toast({
@@ -103,7 +103,7 @@ function GroupChatModal({children}) {
           status: "error",
           duration: 5000,
           isClosable: true,
-          position: "bottom",
+          position: "top-right",
         });
       }
 
@@ -115,7 +115,7 @@ function GroupChatModal({children}) {
           status: "warning",
           duration: 5000,
           isClosable: true,
-          position: "top",
+          position: "top-right",
         });
         return;
       }

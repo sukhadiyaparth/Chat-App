@@ -4,6 +4,7 @@ import { ViewIcon } from "@chakra-ui/icons";
 
 function ProfileModal({children,user}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    console.log(user , "image1");
   return (
     <>{
         children ? (
@@ -26,7 +27,7 @@ function ProfileModal({children,user}) {
            <Image
            borderRadius="full"
            boxSize="150px"
-           src = {user?.pic}
+           src = {user?.img}
            />
           </ModalBody>
 

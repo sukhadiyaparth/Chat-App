@@ -3,7 +3,7 @@ const User = require('../model/userModal')
 const {setUser} = require("../config/generateJWT")
 
 const       SignUp = asyncHandler( async    (req,res)=>{
-    const{name,email,password,pic} = req?.body;
+    const{name,email,password,img} = req?.body;
 
     if(!name || !email || !password ){
         res.status(401);
@@ -19,15 +19,16 @@ const       SignUp = asyncHandler( async    (req,res)=>{
     }
 
    const createUser = await User.create({
-    name :name,email:email,password:password,pic :pic
+    name :name,email:email,password:password,img :img
     })
+    
 
     if(createUser){
         res.status(201).json({
             id : createUser?._id,
             name : createUser?.name,
             email : createUser?.email,
-            pic : createUser?.pic,
+            img : createUser?.img,
             JwtToken : setUser(createUser)
 
 
@@ -52,7 +53,7 @@ try {
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
-    pic: user.pic,
+    img: user.img,
     JwtToken :setUser(user)
    })
 
