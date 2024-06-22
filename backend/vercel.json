@@ -2,6 +2,6 @@
   "version": 2,
   "name": "chat-app",
   "routes": [
-    { "src": "/(.*)", "dest": "/app.js" }
+    { "src": "/(.*)", "dest": "/srever.js" }
   ]
 }
