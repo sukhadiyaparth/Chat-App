@@ -119,7 +119,10 @@ socket.emit("new message",data)
 
   useEffect(()=>{
     // connection code
-    socket = io(ENDPOINT)
+    socket = io(ENDPOINT,{
+    withCredentials: true, 
+    }
+      )
 console.log(user);
     socket.emit("setup",user)
     socket.on ("conncted " ,()=>setsocketconnected(true))
