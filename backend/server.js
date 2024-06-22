@@ -4,17 +4,19 @@ const connectDb = require("./config/db");
 const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
 const messageRoute = require("./routes/messageRoute")
+const cors = require('cors');
 
 const {notFound,errorHandler} = require("./middelware/error");
 
 
 
 //create instance file 
+
 const app = express()
 connectDb();
 
 const PORT = process.env.PORT || 1000; 
-
+app.use(cors());
 app.use(express.json())
 
 
