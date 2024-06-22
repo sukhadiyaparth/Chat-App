@@ -52,8 +52,8 @@ const server = app.listen(
     cors: {
       origin: "https://chat-app-frontend-ochre.vercel.app/",
         methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
       // credentials: true,
     },
   });
