@@ -24,6 +24,10 @@ app.use("/api/chat", chatRoute);
 app.use("/api/messages", messageRoute);
 
 
+app.get("/",(req,res)=>{
+res.send("hello")
+})
+
 
 app.use(notFound);
 app.use(errorHandler);
