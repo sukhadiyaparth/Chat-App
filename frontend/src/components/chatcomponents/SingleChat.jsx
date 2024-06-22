@@ -121,6 +121,8 @@ socket.emit("new message",data)
     // connection code
     socket = io(ENDPOINT,{
     withCredentials: true, 
+    transports: ['websocket'],
+      
     }
       )
 console.log(user);
