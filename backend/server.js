@@ -56,6 +56,7 @@ const server = app.listen(
     credentials: true,
       // credentials: true,
     },
+      transports: ['websocket'], // Ensure WebSocket transport is enabled
   });
 
   io.on("connection",(socket)=>{
