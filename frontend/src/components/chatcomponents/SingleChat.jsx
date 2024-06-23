@@ -52,7 +52,7 @@ const fetchMessages = async () => {
     setLoading(true);
 
     const { data } = await axios.get(
-      `/api/messages/${selectedchat?._id}`,
+      `https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/messages/${selectedchat?._id}`,
       config
     );
     setMessages(data);
@@ -90,7 +90,7 @@ console.log(selectedchat?._id , "id");
   setNewMessage(" ");
 
   const { data } = await axios.post(
-    "/api/messages",
+    "https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/messages",
     {
       content: newMessage,
       chatId: selectedchat?._id,
