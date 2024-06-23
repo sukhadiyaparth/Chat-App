@@ -43,7 +43,7 @@ const submitHandler =async ()=>{
               "Content-type": "application/json",
             },
           };
-        const {data}= await axios.post("/api/user/login",
+        const {data}= await axios.post("https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/user/login",
         {
           email,
           password,
