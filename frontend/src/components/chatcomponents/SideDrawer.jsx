@@ -60,7 +60,7 @@ function SideDrawer() {
                 }
               } ;
 
-          const {data} = await axios.get(`api/user?search=${search}`, config);
+          const {data} = await axios.get(`https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/user?search=${search}`, config);
           
           setloading(false)
           setserchResult(data)
@@ -88,7 +88,7 @@ function SideDrawer() {
           Authorization: `Bearer ${user?.JwtToken}`,
         },
       };
-      const { data } = await axios.post(`/api/chat`, {userId} , config);
+      const { data } = await axios.post(`https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat`, {userId} , config);
       // we update the chat or apnded the chat if it is exist
       if (!chat.find((c) => c?._id === data?._id)) setchat([data, ...chat]);
       setselectedchat(data);
