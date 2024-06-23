@@ -54,7 +54,7 @@ function UpdateGroupchatModal({ fetchAgain, setFetchAgain ,fetchMessages}) {
           },
         };
         const { data } = await axios.put(
-          `/api/chat/groupremove`,
+          `https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat/groupremove`,
           {
             chatId: selectedchat?._id,
             userId: Removeuser?._id,
@@ -116,7 +116,7 @@ console.log(selectedchat);
               },
             };
             const { data } = await axios.put(
-              `/api/chat/groupadd`,
+              `https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat/groupadd`,
               {
                 chatId: selectedchat?._id,
                 userId: Adduser?._id,
@@ -152,7 +152,7 @@ console.log(selectedchat);
                 },
             };
             const {data} = await axios.put(
-                `/api/chat/rename`,
+                `https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat/rename`,
                 {
                     chatId: selectedchat?._id,
                     chatname: groupChatname,
@@ -192,7 +192,7 @@ console.log(selectedchat);
               Authorization: `Bearer ${user?.JwtToken}`,
             },
           };
-          const { data } = await axios.get(`/api/user?search=${search}`, config);
+          const { data } = await axios.get(`https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/user?search=${search}`, config);
           console.log(data);
           setloading(false);
           setsearchResult(data);
