@@ -50,7 +50,7 @@ const server = app.listen(
   const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
-      origin: "https://chat-app-frontend-ochre.vercel.app/",
+      origin: "*",
         methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
