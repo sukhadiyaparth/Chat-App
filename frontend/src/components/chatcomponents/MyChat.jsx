@@ -18,7 +18,7 @@ const fetchChat = async()=> {
       },
     };
 
-    const { data } = await axios.get("/api/chat", config);
+    const { data } = await axios.get("https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat", config);
     setchat(data);
   } catch (error) {
     toast({
