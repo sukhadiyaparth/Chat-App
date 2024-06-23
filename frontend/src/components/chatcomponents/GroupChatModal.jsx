@@ -44,7 +44,7 @@ function GroupChatModal({children}) {
           Authorization: `Bearer ${user?.JwtToken}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${usersearch}`, config);
+      const { data } = await axios.get(`https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/user?search=${usersearch}`, config);
       console.log(data);
       setloading(false);
       setsearchResult(data);
@@ -79,7 +79,7 @@ function GroupChatModal({children}) {
           },
         };
         const response = await axios.post(
-          `/api/chat/group`,
+          `https://chat-app-api-git-main-parth-sukhadiyas.vercel.app/api/chat/group`,
           {
             name: groupChatName,
             user: JSON.stringify(selectedusaer.map((u) => u._id)),
