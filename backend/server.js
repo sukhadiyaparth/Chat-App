@@ -48,15 +48,18 @@ const server = app.listen(
 
   // this code is handle corse error
   const io = require("socket.io")(server, {
-    pingTimeout: 60000,
+    // pingTimeout: 60000,
     cors: {
-      origin: "https://chat-app-frontend-ochre.vercel.app",
+      // origin: "https://chat-app-frontend-ochre.vercel.app",
         // methods: ["GET", "POST"],
     // allowedHeaders: ["Content-Type", "Authorization"],
     // credentials: true,
       // credentials: true,
+         origin: "*",
+    credentials: true,
+    methods: ["GET", "POST"],
     },
-      transports: ['websocket'], // Ensure WebSocket transport is enabled
+      // transports: ['websocket'], // Ensure WebSocket transport is enabled
   });
 
   io.on("connection",(socket)=>{
