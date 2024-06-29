@@ -55,7 +55,7 @@ const server = app.listen(
     // allowedHeaders: ["Content-Type", "Authorization"],
     // credentials: true,
       // credentials: true,
-         origin: "*",
+         origin: "https://chat-app-frontend-ochre.vercel.app",
     credentials: true,
     methods: ["GET", "POST"],
     },
