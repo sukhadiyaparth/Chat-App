@@ -15,7 +15,7 @@ import Lottie from "react-lottie";
 import animationData from "../../animation/typing.json";
 
 
-const ENDPOINT = "https://chat-app-api-git-main-parth-sukhadiyas.vercel.app";
+const ENDPOINT = "http://127.0.0.1:1000";
 var socket, selectedChatCompare;
 const defaultOptions = {
   loop: true,
