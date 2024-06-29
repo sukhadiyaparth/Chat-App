@@ -52,8 +52,8 @@ const server = app.listen(
     cors: {
       origin: "https://chat-app-frontend-ochre.vercel.app",
         methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    // allowedHeaders: ["Content-Type", "Authorization"],
+    // credentials: true,
       // credentials: true,
     },
       transports: ['websocket'], // Ensure WebSocket transport is enabled
