@@ -26,7 +26,7 @@ app.use("/api/chat", chatRoute);
 app.use("/api/messages", messageRoute);
 
 
-app.get("/",(req,res)=>{++
+app.get("/",(req,res)=>{
 res.send("hello")
 })
 
@@ -48,15 +48,18 @@ const server = app.listen(
 
   // this code is handle corse error
   const io = require("socket.io")(server, {
-    pingTimeout: 60000,
+    // pingTimeout: 60000,
     cors: {
-      origin: "chat-app-frontend-ochre.vercel.app",
-        methods: ["GET", "POST"],
+      // origin: "https://chat-app-frontend-ochre.vercel.app",
+        // methods: ["GET", "POST"],
     // allowedHeaders: ["Content-Type", "Authorization"],
     // credentials: true,
-    //   // credentials: true,
+      // credentials: true,
+         origin: "*",
+    credentials: true,
+    methods: ["GET", "POST"],
     },
-    transports: ['websocket'], // Ensure WebSocket transport is enabled
+      // transports: ['websocket'], // Ensure WebSocket transport is enabled
   });
 
   io.on("connection",(socket)=>{
