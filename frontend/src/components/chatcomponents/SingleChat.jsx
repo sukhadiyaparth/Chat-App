@@ -15,7 +15,7 @@ import Lottie from "react-lottie";
 import animationData from "../../animation/typing.json";
 
 
-const ENDPOINT = "http://127.0.0.1:1000";
+const ENDPOINT = "https://chat-app-api-lilac.vercel.app";
 var socket, selectedChatCompare;
 const defaultOptions = {
   loop: true,
@@ -120,11 +120,11 @@ socket.emit("new message",data)
   useEffect(()=>{
     // connection code
     socket = io(ENDPOINT,{
-    withCredentials: true, 
+    // withCredentials: true, 
     transports: ['websocket'],
-    upgrade: false,
-    reconnectionAttempts: 5, // Number of reconnection attempts before giving up
-    timeout: 20000 // Connection timeout in milliseconds
+    // upgrade: false,
+    // reconnectionAttempts: 5, // Number of reconnection attempts before giving up
+    // timeout: 20000 // Connection timeout in milliseconds
       
     }
       )
