@@ -121,7 +121,7 @@ socket.emit("new message",data)
     // connection code
     socket = io("https://vercel.com",{
     // withCredentials: true, 
-    path:'/parth-sukhadiyas/chat-app-api/socket.io'
+    path:'/parth-sukhadiyas/chat-app-api/socket.io',
 
     transports: ['websocket'],
     // upgrade: false,
