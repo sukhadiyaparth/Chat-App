@@ -51,7 +51,7 @@ const server = app.listen(
     pingTimeout: 60000,
     cors: {
       origin: "https://chat-app-frontend-ochre.vercel.app",
-        methods: ["GET", "POST"],
+        // methods: ["GET", "POST"],
     // allowedHeaders: ["Content-Type", "Authorization"],
     // credentials: true,
       // credentials: true,
