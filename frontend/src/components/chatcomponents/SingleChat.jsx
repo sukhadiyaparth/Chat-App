@@ -119,8 +119,10 @@ socket.emit("new message",data)
 
   useEffect(()=>{
     // connection code
-    socket = io("https://chat-app-api-lilac.vercel.app",{
+    socket = io("https://vercel.com",{
     // withCredentials: true, 
+    path:'/parth-sukhadiyas/chat-app-api/socket.io'
+
     transports: ['websocket'],
     // upgrade: false,
     // reconnectionAttempts: 5, // Number of reconnection attempts before giving up
